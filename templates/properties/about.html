@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us - El Dawly Real Estate{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <div class="hero mb-5">
+        <div class="container">
+            <h1> El Dawly Real Estate</h1>
+            <p class="lead">Your trusted partner in Vienna's real estate market</p>
+        </div>
+    </div>
+
+    <!-- Company Overview -->
+    <section class="mb-5">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2>Our Story</h2>
+                <p class="lead">El Dawly Real Estate has been a leading name in Vienna's real estate market for over a decade.</p>
+                <p>We specialize in providing exceptional real estate services to clients looking to buy, sell, or rent properties in Vienna. With our extensive portfolio of over 300 properties, we cater to various needs and preferences, ensuring that every client finds their perfect match.</p>
+                <p>Our team of experienced professionals is dedicated to providing personalized service and expert guidance throughout your real estate journey.</p>
+            </div>
+            <div class="col-md-6">
+                <img src="{% static 'images/about-office.jpg' %}" alt="El Dawly Office" class="img-fluid rounded">
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Values -->
+    <section class="mb-5 bg-light py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Our Values</h2>
+            <div class="row">
+                <div class="col-md-4 text-center mb-4">
+                    <i class="fas fa-handshake fa-3x mb-3 text-primary"></i>
+                    <h4>Integrity</h4>
+                    <p>We conduct our business with the highest standards of honesty and transparency.</p>
+                </div>
+                <div class="col-md-4 text-center mb-4">
+                    <i class="fas fa-star fa-3x mb-3 text-primary"></i>
+                    <h4>Excellence</h4>
+                    <p>We strive for excellence in every aspect of our service delivery.</p>
+                </div>
+                <div class="col-md-4 text-center mb-4">
+                    <i class="fas fa-users fa-3x mb-3 text-primary"></i>
+                    <h4>Client Focus</h4>
+                    <p>Our clients' needs and satisfaction are at the heart of everything we do.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Services -->
+    <section class="mb-5">
+        <h2 class="text-center mb-4">Our Services</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Property Sales</h4>
+                        <p class="card-text">We help you find your dream home or investment property in Vienna's most desirable locations.</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-primary"></i> Residential Properties</li>
+                            <li><i class="fas fa-check text-primary"></i> Commercial Properties</li>
+                            <li><i class="fas fa-check text-primary"></i> Investment Opportunities</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Property Management</h4>
+                        <p class="card-text">Comprehensive property management services for landlords and property owners.</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-primary"></i> Tenant Screening</li>
+                            <li><i class="fas fa-check text-primary"></i> Maintenance Management</li>
+                            <li><i class="fas fa-check text-primary"></i> Rent Collection</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Consulting</h4>
+                        <p class="card-text">Expert advice on real estate investments and market trends.</p>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-primary"></i> Market Analysis</li>
+                            <li><i class="fas fa-check text-primary"></i> Investment Strategy</li>
+                            <li><i class="fas fa-check text-primary"></i> Property Valuation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="mb-5">
+        <h2 class="text-center mb-4">Our Team</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-4 mb-4">
+                <div class="card text-center">
+                    <img src="{% static 'images/team-1.jpg' %}" class="card-img-top" alt="Doaa Salem">
+                    <div class="card-body">
+                        <h5 class="card-title">DOAA SALEM</h5>
+                        <p class="card-text text-muted">CEO & Founder</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card text-center">
+                    <img src="{% static 'images/team-2.jpg' %}" class="card-img-top" alt="Mazhar Aly">
+                    <div class="card-body">
+                        <h5 class="card-title">MAZHAR ALY</h5>
+                        <p class="card-text text-muted">Manager</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="bg-primary text-white py-5 text-center">
+        <div class="container">
+            <h2 class="mb-4">Ready to Find Your Dream Property?</h2>
+            <p class="lead mb-4">Contact us today and let us help you find the perfect property in Vienna.</p>
+            <a href="{% url 'properties:contact' %}" class="btn btn-light btn-lg">Contact Us</a>
+        </div>
+    </section>
+</div>
+{% endblock %} 

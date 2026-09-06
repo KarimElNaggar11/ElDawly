@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Properties - El Dawly Real Estate{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Properties</h1>
+    
+    <div class="row">
+        <!-- Filters Sidebar -->
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Filters</h5>
+                    <form method="get" class="search-form">
+                        <!-- Property Type -->
+                        <div class="mb-3">
+                            <label class="form-label">Property Type</label>
+                            <select name="type" class="form-select">
+                                <option value="">All Types</option>
+                                {% for type in property_types %}
+                                    <option value="{{ type.name }}" {% if request.GET.type == type.name %}selected{% endif %}>
+                                        {{ type.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <!-- Price Range -->
+                        <div class="mb-3">
+                            <label class="form-label">Price Range</label>
+                            <div class="row g-2">
+                                <div class="col">
+                                    <input type="number" name="min_price" class="form-control" placeholder="Min" value="{{ request.GET.min_price }}">
+                                </div>
+                                <div class="col">
+                                    <input type="number" name="max_price" class="form-control" placeholder="Max" value="{{ request.GET.max_price }}">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Rooms -->
+                        <div class="mb-3">
+                            <label class="form-label">Rooms</label>
+                            <select name="rooms" class="form-select">
+                                <option value="">Any</option>
+                                {% for i in "12345"|make_list %}
+                                    <option value="{{ i }}" {% if request.GET.rooms == i %}selected{% endif %}>
+                                        {{ i }}+
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <!-- District -->
+                        <div class="mb-3">
+                            <label class="form-label">District</label>
+                            <select name="district" class="form-select">
+                                <option value="">All Districts</option>
+                                {% for district in districts %}
+                                    <option value="{{ district }}" {% if request.GET.district == district %}selected{% endif %}>
+                                        {{ district }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <!-- Features -->
+                        <div class="mb-3">
+                            <label class="form-label">Features</label>
+                            {% for feature in features %}
+                                <div class="form-check">
+                                    <input class="form-check-input feature-checkbox" type="checkbox" name="features" value="{{ feature.id }}" id="feature{{ feature.id }}">
+                                    <label class="form-check-label" for="feature{{ feature.id }}">
+                                        {{ feature.name }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Property Listings -->
+        <div class="col-md-9">
+            <!-- Search Bar -->
+            <div class="mb-4">
+                <form method="get" class="d-flex">
+                    <input type="text" name="q" class="form-control me-2" placeholder="Search properties..." value="{{ request.GET.q }}">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+            
+            <!-- Properties Grid -->
+            <div class="row">
+                {% for property in properties %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card property-card">
+                            {% if property.images.first %}
+                                <img src="{{ property.images.first.image.url }}" class="card-img-top" alt="{{ property.title }}">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ property.title }}</h5>
+                                <p class="price">€{{ property.price }}</p>
+                                <p class="card-text">
+                                    <i class="fas fa-map-marker-alt"></i> {{ property.district }}, {{ property.city }}
+                                </p>
+                                <p class="features">
+                                    <i class="fas fa-bed"></i> {{ property.rooms }} rooms |
+                                    <i class="fas fa-bath"></i> {{ property.bathrooms }} baths |
+                                    <i class="fas fa-ruler-combined"></i> {{ property.size }}m²
+                                </p>
+                                <a href="{% url 'properties:property_detail' property.slug %}" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12">
+                        <div class="alert alert-info">
+                            No properties found matching your criteria.
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Pagination -->
+            {% if is_paginated %}
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.rooms %}&rooms={{ request.GET.rooms }}{% endif %}{% if request.GET.district %}&district={{ request.GET.district }}{% endif %}">&laquo; First</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.rooms %}&rooms={{ request.GET.rooms }}{% endif %}{% if request.GET.district %}&district={{ request.GET.district }}{% endif %}">Previous</a>
+                            </li>
+                        {% endif %}
+                        
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ num }}</span>
+                                </li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.rooms %}&rooms={{ request.GET.rooms }}{% endif %}{% if request.GET.district %}&district={{ request.GET.district }}{% endif %}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.rooms %}&rooms={{ request.GET.rooms }}{% endif %}{% if request.GET.district %}&district={{ request.GET.district }}{% endif %}">Next</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.type %}&type={{ request.GET.type }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.rooms %}&rooms={{ request.GET.rooms }}{% endif %}{% if request.GET.district %}&district={{ request.GET.district }}{% endif %}">Last &raquo;</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 
